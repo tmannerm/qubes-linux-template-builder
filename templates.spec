@@ -60,7 +60,7 @@ touch $RPM_BUILD_ROOT/%{dest_dir}/icon.png
 export XDG_DATA_DIRS=/usr/share/
 if [ "$1" -gt 1 ] ; then
     # upgrading already installed template...
-    # avoid removing innocent files if *.desktop doesn't mach anything
+    # avoid removing innocent files if *.desktop doesn't match anything
     # https://bugs.freedesktop.org/105635
     if ls %{dest_dir}/apps/*.directory %{dest_dir}/apps/*.desktop >/dev/null 2>&1; then
         echo "--> Removing previous menu shortcuts..."
@@ -104,8 +104,8 @@ fi
 
 export XDG_DATA_DIRS=/usr/share/
 
-echo "--> Instaling menu shortcuts..."
-ln -sf /usr/share/qubes/icons/template.png %{dest_dir}/icon.png
+echo "--> Installing menu shortcuts..."
+cp /usr/share/qubes/icons/template.png %{dest_dir}/icon.png
 
 local_user=`getent group qubes | cut -d : -f 4 | cut -d , -f 1`
 if [ -n "$local_user" ]; then

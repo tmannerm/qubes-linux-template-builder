@@ -53,7 +53,7 @@ mkdir -p $RPM_BUILD_ROOT/%{dest_dir}/apps.tempicons
 mkdir -p $RPM_BUILD_ROOT/%{dest_dir}/apps
 cp appmenus/whitelisted-appmenus.list appmenus/vm-whitelisted-appmenus.list $RPM_BUILD_ROOT/%{dest_dir}/
 cp appmenus/netvm-whitelisted-appmenus.list $RPM_BUILD_ROOT/%{dest_dir}/
-touch $RPM_BUILD_ROOT/%{dest_dir}/icon.png
+cp template.conf $RPM_BUILD_ROOT/%{dest_dir}/
 
 %pre
 
@@ -105,7 +105,6 @@ fi
 export XDG_DATA_DIRS=/usr/share/
 
 echo "--> Installing menu shortcuts..."
-cp /usr/share/qubes/icons/template.png %{dest_dir}/icon.png
 
 local_user=`getent group qubes | cut -d : -f 4 | cut -d , -f 1`
 if [ -n "$local_user" ]; then
@@ -193,4 +192,4 @@ rm -rf $RPM_BUILD_ROOT
 %attr (664,root,qubes) %{dest_dir}/whitelisted-appmenus.list
 %attr (664,root,qubes) %{dest_dir}/vm-whitelisted-appmenus.list
 %attr (664,root,qubes) %{dest_dir}/netvm-whitelisted-appmenus.list
-%{dest_dir}/icon.png
+%attr (664,root,qubes) %{dest_dir}/template.conf

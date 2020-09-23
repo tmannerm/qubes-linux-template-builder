@@ -78,6 +78,7 @@ else
     IMG_LOOP=$(/sbin/losetup -f --show "$IMG")
     IMG_DEV=${IMG_LOOP}
 fi
+udevadm settle --exit-if-exists="$IMG_DEV"
 mount "$IMG_DEV" mnt || exit 1
 export INSTALLDIR=mnt
 
@@ -104,6 +105,27 @@ elif [ -d "${_appmenus_dir}/appmenus" ]; then
     ln -s "${_appmenus_dir}/appmenus" appmenus
 else
     ln -s "appmenus_generic" appmenus
+fi
+
+# ------------------------------------------------------------------------------
+# Create Template Config File
+# ------------------------------------------------------------------------------
+
+echo "--> Creating template config file..."
+rm -f template.conf
+_conf_dir="${CONFIG_DIR:-${SCRIPTSDIR}}"
+if [ -f "${_conf_dir}/template_${DIST}_${TEMPLATE_FLAVOR}.conf" ]; then
+    ln -s "${_conf_dir}/template_${DIST}_${TEMPLATE_FLAVOR}.conf" template.conf
+elif [ -f "${_conf_dir}/template_${DIST//[0-9]*}_${TEMPLATE_FLAVOR}.conf" ]; then
+    ln -s "${_conf_dir}/template_${DIST//[0-9]*}_${TEMPLATE_FLAVOR}.conf" template.conf
+elif [ -f "${_conf_dir}/template_$DIST.conf" ]; then
+    ln -s "${_conf_dir}/template_$DIST.conf" template.conf
+elif [ -f "${_conf_dir}/template_${DIST//[0-9]*}.conf" ]; then
+    ln -s "${_conf_dir}/template_${DIST//[0-9]*}.conf" template.conf
+elif [ -f "${_conf_dir}/template.conf" ]; then
+    ln -s "${_conf_dir}/template.conf" template.conf
+else
+    ln -s template_generic.conf template.conf
 fi
 
 # ------------------------------------------------------------------------------
